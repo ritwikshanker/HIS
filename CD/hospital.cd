@@ -1,28 +1,8 @@
-package hospital.main;
+package com.his.hospital;
 
 import java.util.Date;
 
 classdiagram hospital {
-    
-    abstract class Person {
-        public String fullName;
-        String address;
-        Date dateOfBirth;
-        String email;
-        String phone;
-        char gender;
-    }
-
-    class Patient extends Person {
-        int patientId;
-        List<MedicalHistory> medicalHistory;
-
-        public void scheduleAppointment();
-        public void requestMedication();
-        public void provideMedicalHistory();
-    }
-
-    composition Patient -> MedicalHistory [*];
 
     enum Department {
         EMERGENCY_DEPARTMENT,INTENSIVE_CARE_UNIT,OPERATING_ROOM,

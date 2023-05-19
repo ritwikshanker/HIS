@@ -1,3 +1,5 @@
+package com.his.ehr;
+
 import java.util.Date;
 
 classdiagram ElectronicHealthRecord {
