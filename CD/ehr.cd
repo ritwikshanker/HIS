@@ -1,0 +1,91 @@
+import java.util.Date;
+
+classdiagram ElectronicHealthRecord {
+    
+    class Symptoms {
+        private List<String> name;
+    }
+
+    class Diagnosis {
+        private String code;
+        private String description;
+        private List<Symptoms> symptoms;
+        private String date;
+    }
+
+    class Appointment {
+        private String patientId;
+        private String doctorID;
+        private String date;
+        private String time;
+    }
+
+    class Medication {
+        private String name;
+        private int dosage;
+        private String frequency;
+    }
+
+    class MedicalCondition {
+        private String name;
+        private String description;
+        private String treatment;
+    }
+
+    association [1] MedicalCondition -> (treatedBy) Medication [1..*];
+
+    enum BloodType {
+        A_POSITIVE,A_NEGATIVE,B_POSITIVE,B_NEGATIVE,AB_POSITIVE,AB_NEGATIVE,O_POSITIVE,O_NEGATIVE;
+    }
+
+    abstract class MedicalHistory {
+        protected Date dateOfBirth;
+        protected BloodType bloodType;
+        protected String allergies;
+        protected List<MedicalCondition> medicalConditions;
+        protected List<Medication> medications;
+
+        public BloodType getBloodType();
+        public String getAllergies();
+        public List<MedicalCondition> getMedicalConditions();
+        public List<Medication> getMedications();
+        public void updateAllergies(String allergies);
+        public abstract void addMedicalCondition(MedicalCondition condition);
+        public abstract void removeMedicalCondition(MedicalCondition condition);
+        public abstract void addMedication(Medication medication);
+        public abstract void removeMedication(Medication medication);
+    }
+
+    composition MedicalHistory -> medicalConditions [*];
+    composition MedicalHistory -> medications [*];
+
+    class ElectronicHealthRecord {
+        private List<Diagnosis> diagnosisRecords;
+        private List<Symptoms> symptomsRecords;
+        private List<Medication> medicationRecords;
+        private List<Appointment> appointmentRecords;
+
+        public List<Diagnosis> getDiagnosisRecords() {
+            return diagnosisRecords;
+        }
+
+        public List<Symptoms> getSymptomsRecords() {
+            return symptomsRecords;
+        }
+
+        public List<Medication> getMedicationRecords() {
+            return medicationRecords;
+        }
+
+        public List<Appointment> getAppointmentRecords() {
+            return appointmentRecords;
+        }
+    } 
+    
+    composition ElectronicHealthRecord -> MedicalHistory [*];
+    
+}
+
+
+
+    

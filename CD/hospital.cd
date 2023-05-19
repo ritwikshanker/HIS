@@ -1,0 +1,99 @@
+package hospital.main;
+
+import java.util.Date;
+
+classdiagram hospital {
+    
+    abstract class Person {
+        public String fullName;
+        String address;
+        Date dateOfBirth;
+        String email;
+        String phone;
+        char gender;
+    }
+
+    class Patient extends Person {
+        int patientId;
+        List<MedicalHistory> medicalHistory;
+
+        public void scheduleAppointment();
+        public void requestMedication();
+        public void provideMedicalHistory();
+    }
+
+    composition Patient -> MedicalHistory [*];
+
+    enum Department {
+        EMERGENCY_DEPARTMENT,INTENSIVE_CARE_UNIT,OPERATING_ROOM,
+        RADIOLOGY_DEPARTMENT,LABORATORY,PHARMACY,CARDIOLOGY_DEPARTMENT,
+        ONCOLOGY_DEPARTMENT,PEDIATRICS_DEPARTMENT,OBSTETRICS_AND_GYNECOLOGY_DEPARTMENT,
+        NEUROLOGY_DEPARTMENT,ORTHOPEDICS_DEPARTMENT,DERMATOLOGY_DEPARTMENT,PSYCHIATRY_DEPARTMENT,
+        REHABILITATION_DEPARTMENT,ANESTHESIOLOGY_DEPARTMENT,OPHTHALMOLOGY_DEPARTMENT,
+        ENT_DEPARTMENT,GASTROENTEROLOGY_DEPARTMENT,UROLOGY_DEPARTMENT;
+    }
+
+    class Departments {
+        Department department;
+        String location;
+        String phone;
+    }
+
+    package hospital.staff {
+        class Employee extends Person {
+            int employeeID;
+        }
+
+        class Receptionist extends Employee {
+            public void bookAppointment();
+            public void registerPatient();
+            public void checkInPatient();
+            public void checkOutPatient();
+        }
+
+        class Nurse extends Employee {
+            public void checkVitalSigns();
+            public void administerMedication();
+            public void updateMedicalHistory();
+        }
+
+        class Pharmacist extends Employee {
+            public void fillPrescription();
+            public void checkForDrugInteractions();
+            public void updateMedication();
+        }
+
+        class AdminStaff extends Employee {
+            public void updatePatientRecords();
+            public void updateEmployeeRecords();
+            public void updateDepartmentRecords();
+        }
+
+        class Pathologists extends Employee {
+            public void performTest();
+        }
+
+        class Doctor extends Person implements Doctor {
+            int doctorID;
+            String specialization;
+            int yearsOfExperience;
+            public void prescribeMedication();
+            public void diagnose();
+            public void performSurgery();
+        }
+
+        class Surgeon extends Doctor {
+            public void performSurgery();
+        }
+
+        association [1] Doctor (head) <-> (heads) Departments [0..1];
+        association [1..*] Employee <-> (worksAt) Departments [0..1];
+  }
+
+    // for the sake of reference, we are not going to model the following classes
+    association [1] Lecturer (heldBy) <-> (holds) Lecture;
+    association Student (attendees) <-> (attends) Lecture;
+    association [*] Course -> (curriculum) Lecture [1..*];
+    association [1..*] Student <-> (studies) Course [1..*];
+
+}
