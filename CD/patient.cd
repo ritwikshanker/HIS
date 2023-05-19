@@ -19,5 +19,5 @@ classdiagram Patient {
         public void provideMedicalHistory();
     }
 
-    composition Patient -> MedicalHistory [*];
+    composition Patient -> com.his.ehr.MedicalHistory [*];
 }

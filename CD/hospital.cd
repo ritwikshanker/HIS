@@ -20,7 +20,16 @@ classdiagram hospital {
     }
 
     package hospital.staff {
-        class Employee extends Person {
+
+        class Duties {
+            Date shiftStart;
+            Date shiftEnd;
+            boolean available;
+        }
+
+        abstract class Employee extends Person {
+            Date dateJoined;
+            Duties duties;
             int employeeID;
         }
 
@@ -59,13 +68,13 @@ classdiagram hospital {
             int yearsOfExperience;
             public void prescribeMedication();
             public void diagnose();
-            public void performSurgery();
         }
 
         class Surgeon extends Doctor {
             public void performSurgery();
         }
 
+        association [1] AdminStaff (supervisedBy) <-> (supervises) Employee [1..*];
         association [1] Doctor (head) <-> (heads) Departments [0..1];
         association [1..*] Employee <-> (worksAt) Departments [0..1];
   }
