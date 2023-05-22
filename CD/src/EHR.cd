@@ -15,6 +15,13 @@ classdiagram EHR {
         private String date;
     }
 
+    class ScanReport {
+        private String name;
+        private String description;
+        private String date;
+        private String scanFile;
+    }
+
     class Appointment {
         private String patientId;
         private String doctorID;
@@ -51,6 +58,7 @@ classdiagram EHR {
     composition MedicalHistory -> Medication [*];
     composition MedicalHistory -> Diagnosis [*];
     composition MedicalHistory -> Symptoms [*];
+    composition MedicalHistory -> ScanReport [*];
     composition MedicalHistory -> Appointment [*];
 
     class ElectronicHealthRecord {

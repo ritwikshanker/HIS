@@ -30,9 +30,10 @@ classdiagram Hospital {
 
         abstract class Employee extends Person {
             Date dateJoined;
-            Duties duties;
             int employeeID;
         }
+
+        composition [1] Employee (duties) <-> (duties) Duties [1..*];
 
         class Receptionist extends Employee {
             public void bookAppointment();
