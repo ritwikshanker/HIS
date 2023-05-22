@@ -1,8 +1,9 @@
-package com.his.hospital;
+//package com.his.hospital;
 
 import java.util.Date;
+import Patient.Person;
 
-classdiagram hospital {
+classdiagram Hospital {
 
     enum Department {
         EMERGENCY_DEPARTMENT,INTENSIVE_CARE_UNIT,OPERATING_ROOM,
@@ -62,7 +63,7 @@ classdiagram hospital {
             public void performTest();
         }
 
-        class Doctor extends Person implements Doctor {
+        class Doctor extends Person {
             int doctorID;
             String specialization;
             int yearsOfExperience;
@@ -78,11 +79,4 @@ classdiagram hospital {
         association [1] Doctor (head) <-> (heads) Departments [0..1];
         association [1..*] Employee <-> (worksAt) Departments [0..1];
   }
-
-    // for the sake of reference, we are not going to model the following classes
-    association [1] Lecturer (heldBy) <-> (holds) Lecture;
-    association Student (attendees) <-> (attends) Lecture;
-    association [*] Course -> (curriculum) Lecture [1..*];
-    association [1..*] Student <-> (studies) Course [1..*];
-
 }

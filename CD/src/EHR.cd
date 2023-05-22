@@ -1,8 +1,8 @@
-package com.his.ehr;
+//package com.his.ehr;
 
 import java.util.Date;
 
-classdiagram ElectronicHealthRecord {
+classdiagram EHR {
     
     class Symptoms {
         private List<String> name;
@@ -58,8 +58,8 @@ classdiagram ElectronicHealthRecord {
         public abstract void removeMedication(Medication medication);
     }
 
-    composition MedicalHistory -> medicalConditions [*];
-    composition MedicalHistory -> medications [*];
+    composition MedicalHistory -> MedicalCondition [*];
+    composition MedicalHistory -> Medication [*];
 
     class ElectronicHealthRecord {
         private List<Diagnosis> diagnosisRecords;
@@ -67,21 +67,13 @@ classdiagram ElectronicHealthRecord {
         private List<Medication> medicationRecords;
         private List<Appointment> appointmentRecords;
 
-        public List<Diagnosis> getDiagnosisRecords() {
-            return diagnosisRecords;
-        }
+        public List<Diagnosis> getDiagnosisRecords();
 
-        public List<Symptoms> getSymptomsRecords() {
-            return symptomsRecords;
-        }
+        public List<Symptoms> getSymptomsRecords();
 
-        public List<Medication> getMedicationRecords() {
-            return medicationRecords;
-        }
+        public List<Medication> getMedicationRecords();
 
-        public List<Appointment> getAppointmentRecords() {
-            return appointmentRecords;
-        }
+        public List<Appointment> getAppointmentRecords();
     } 
     
     composition ElectronicHealthRecord -> MedicalHistory [*];
