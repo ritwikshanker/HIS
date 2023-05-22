@@ -41,39 +41,24 @@ classdiagram EHR {
     }
 
     abstract class MedicalHistory {
-        protected Date dateOfBirth;
-        protected BloodType bloodType;
-        protected String allergies;
-        protected List<MedicalCondition> medicalConditions;
-        protected List<Medication> medications;
+        protected List<String> allergies;
+        
 
-        public BloodType getBloodType();
-        public String getAllergies();
-        public List<MedicalCondition> getMedicalConditions();
-        public List<Medication> getMedications();
-        public void updateAllergies(String allergies);
-        public abstract void addMedicalCondition(MedicalCondition condition);
-        public abstract void removeMedicalCondition(MedicalCondition condition);
-        public abstract void addMedication(Medication medication);
-        public abstract void removeMedication(Medication medication);
+        public List<String> getAllergies();
     }
 
     composition MedicalHistory -> MedicalCondition [*];
     composition MedicalHistory -> Medication [*];
+    composition MedicalHistory -> Diagnosis [*];
+    composition MedicalHistory -> Symptoms [*];
+    composition MedicalHistory -> Appointment [*];
 
     class ElectronicHealthRecord {
-        private List<Diagnosis> diagnosisRecords;
-        private List<Symptoms> symptomsRecords;
-        private List<Medication> medicationRecords;
-        private List<Appointment> appointmentRecords;
+        protected Date dateOfBirth;
+        protected BloodType bloodType;
 
-        public List<Diagnosis> getDiagnosisRecords();
-
-        public List<Symptoms> getSymptomsRecords();
-
-        public List<Medication> getMedicationRecords();
-
-        public List<Appointment> getAppointmentRecords();
+        public BloodType getBloodType();
+        public Date getDateOfBirth();
     } 
     
     composition ElectronicHealthRecord -> MedicalHistory [*];
