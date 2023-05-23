@@ -1,0 +1,5 @@
+java -jar MCCD.jar -i src/EHR.cd -s symbols/EHR.cdsym --path symbols -o out --gen
+
+java -jar MCCD.jar -i src/Patient.cd -s symbols/Patient.cdsym --path symbols -o out --gen
+
+java -jar MCCD.jar -i src/hospital.cd --path symbols -o out --gen

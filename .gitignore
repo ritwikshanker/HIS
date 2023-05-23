@@ -1,6 +1,5 @@
 CD/symbols/EHR.cdsym
 CD/symbols/Patient.cdsym
-CD/commands.txt
 CD/out/de/monticore/Appointment.java
 CD/out/de/monticore/BloodType.java
 CD/out/de/monticore/Department.java
