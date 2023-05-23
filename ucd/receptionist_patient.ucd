@@ -1,0 +1,21 @@
+usecasediagram Receptionist_patient {
+  @Player --
+    Play,
+    Pay,
+    ChangeProfilePicture;
+
+  @AndroidPlayer specializes Player;
+  @IOSPlayer specializes Player;
+
+  @Server --
+    ShowAd,
+    RegisterScore;
+
+  ShowAd extend Play [!isPremium];
+  RegisterScore extend Play;
+
+  abstract Pay include CheckPremium;
+  CreditCard specializes Pay;
+  Bank specializes Pay;
+  ChangeProfilePicture [isPremium];
+}
