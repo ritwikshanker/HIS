@@ -1,21 +1,23 @@
-usecasediagram Receptionist_patient {
-  @Player --
-    Play,
-    Pay,
-    ChangeProfilePicture;
+usecasediagram Receptionist_Patient {
+  @Receptionist --
+    ScheduleAppointment,
+    ScheduleHospitalAdmission,
+    PatientRegistration,
+    PatientHospitalAdmission,
+    FileMedicalReports;
 
-  @AndroidPlayer specializes Player;
-  @IOSPlayer specializes Player;
+  @Patient --
+    ScheduleAppointment,
+    ScheduleHospitalAdmission,
+    PatientRegistration;
 
-  @Server --
-    ShowAd,
-    RegisterScore;
+  PatientRegistration extend ScheduleHospitalAdmission;
+  PatientRegistration extend ScheduleAppointment;
+  PatientHospitalAdmission include PatientRegistration;
 
-  ShowAd extend Play [!isPremium];
-  RegisterScore extend Play;
+  NewPatientHospitalAdmission specializes PatientHospitalAdmission;
+  InHospitalPatientAdmission specializes PatientHospitalAdmission;
 
-  abstract Pay include CheckPremium;
-  CreditCard specializes Pay;
-  Bank specializes Pay;
-  ChangeProfilePicture [isPremium];
+  NewPatientHospitalAdmission include BedAllotment;
+  InHospitalPatientAdmission include BedAllotment;
 }
