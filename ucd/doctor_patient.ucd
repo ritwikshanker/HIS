@@ -1,0 +1,15 @@
+usecasediagram ElectronicHealthRecord {
+  @Doctor --
+    ViewMedicalHistory,
+    AddDiagnosis,
+    PrescribeMedication;
+
+  @Patient --
+    ViewMedicalHistory,
+    ScheduleAppointment,
+    RequestMedication,
+    ProvideMedicalHistory;
+
+  ViewMedicalHistory extend ProvideMedicalHistory;
+  PrescribeMedication include RequestMedication;
+}
