@@ -1,0 +1,23 @@
+usecasediagram Receptionist_Patient {
+  @Receptionist --
+    ScheduleAppointment,
+    ScheduleHospitalAdmission,
+    PatientRegistration,
+    PatientHospitalAdmission,
+    FileMedicalReports;
+
+  @Patient --
+    ScheduleAppointment,
+    ScheduleHospitalAdmission,
+    PatientRegistration;
+
+  PatientRegistration extend ScheduleHospitalAdmission;
+  PatientRegistration extend ScheduleAppointment;
+  PatientHospitalAdmission include PatientRegistration;
+
+  NewPatientHospitalAdmission specializes PatientHospitalAdmission;
+  InHospitalPatientAdmission specializes PatientHospitalAdmission;
+
+  NewPatientHospitalAdmission include BedAllotment;
+  InHospitalPatientAdmission include BedAllotment;
+}

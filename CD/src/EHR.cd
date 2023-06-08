@@ -1,0 +1,78 @@
+//package com.his.ehr;
+
+import java.util.Date;
+
+classdiagram EHR {
+    
+    class Symptoms {
+        private List<String> name;
+    }
+
+    class Diagnosis {
+        private String code;
+        private String description;
+        private List<Symptoms> symptoms;
+        private String date;
+    }
+
+    class ScanReport {
+        private String name;
+        private String description;
+        private String date;
+        private String scanFile;
+    }
+
+    class Appointment {
+        private String patientId;
+        private String doctorID;
+        private String date;
+        private String time;
+    }
+
+    class Medication {
+        private String name;
+        private int dosage;
+        private String frequency;
+    }
+
+    class MedicalCondition {
+        private String name;
+        private String description;
+        private String treatment;
+    }
+
+    association [1] MedicalCondition -> (treatedBy) Medication [1..*];
+
+    enum BloodType {
+        A_POSITIVE,A_NEGATIVE,B_POSITIVE,B_NEGATIVE,AB_POSITIVE,AB_NEGATIVE,O_POSITIVE,O_NEGATIVE;
+    }
+
+    abstract class MedicalHistory {
+        protected List<String> allergies;
+        
+
+        public List<String> getAllergies();
+    }
+
+    composition MedicalHistory -> MedicalCondition [*];
+    composition MedicalHistory -> Medication [*];
+    composition MedicalHistory -> Diagnosis [*];
+    composition MedicalHistory -> Symptoms [*];
+    composition MedicalHistory -> ScanReport [*];
+    composition MedicalHistory -> Appointment [*];
+
+    class ElectronicHealthRecord {
+        protected Date dateOfBirth;
+        protected BloodType bloodType;
+
+        public BloodType getBloodType();
+        public Date getDateOfBirth();
+    } 
+    
+    composition ElectronicHealthRecord -> MedicalHistory [*];
+    
+}
+
+
+
+    

@@ -1,0 +1,24 @@
+//package com.his.patient;
+
+import EHR.MedicalHistory;
+
+classdiagram Patient {
+
+    class Person {
+        int id;
+        String name;
+        String address;
+        String email;
+        String phone;
+    }
+
+    class Patient extends Person {
+        int patientId;
+        
+        public void scheduleAppointment();
+        public void requestMedication();
+        public void provideMedicalHistory();
+    }
+
+    composition Patient -> MedicalHistory [*];
+}
