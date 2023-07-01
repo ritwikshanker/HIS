@@ -1,9 +1,13 @@
+# HIS
 
-# Models and Documentation {#ch:listings}
+# Models and Documentation
 
 In this section, we present the models developed for the hospital information system using Monticore, a domain-specific modeling language and toolset, as well as Business Process Model and Notation (BPMN) diagrams. The models serve as visual representations of the system's structure, behavior, and interactions, offering stakeholders a comprehensive understanding of the various components and functionalities of the hospital information system.
 
 ## Class Diagrams
+
+![Visual Representation of Class Diagram showing all the classes](\his\Pics\UML_class.png "Class Diagram")
+
 
 ### Patient
 
@@ -19,7 +23,33 @@ The `Patient` class has the following operations:
 
 The `Patient` class has a composition relationship with the `MedicalHistory` class, indicating that each patient has a medical history. This relationship is denoted by the arrow connecting `Patient` to `MedicalHistory` with a multiplicity of `[*]`, meaning each patient can have multiple medical history records.
 
+```
+//package com.his.patient;
 
+import EHR.MedicalHistory;
+
+classdiagram Patient {
+
+    class Person {
+        int id;
+        String name;
+        String address;
+        String email;
+        String phone;
+    }
+
+    class Patient extends Person {
+        int patientId;
+        
+        public void scheduleAppointment();
+        public void requestMedication();
+        public void provideMedicalHistory();
+    }
+
+    composition Patient -> MedicalHistory [*];
+}
+
+```
 
 ### Hospital
 
@@ -40,6 +70,94 @@ There are associations between the classes:
 -   `Doctor` has a relationship with `Departments`, indicating that each doctor can head a department, and each department can have a head doctor.
 
 -   `Employee` has a relationship with `Departments`, indicating that each employee works in one department.
+
+
+
+```
+//package com.his.hospital;
+
+import java.util.Date;
+import Patient.Person;
+
+classdiagram Hospital {
+
+    enum Department {
+        EMERGENCY_DEPARTMENT,INTENSIVE_CARE_UNIT,OPERATING_ROOM,
+        RADIOLOGY_DEPARTMENT,LABORATORY,PHARMACY,CARDIOLOGY_DEPARTMENT,
+        ONCOLOGY_DEPARTMENT,PEDIATRICS_DEPARTMENT,OBSTETRICS_AND_GYNECOLOGY_DEPARTMENT,
+        NEUROLOGY_DEPARTMENT,ORTHOPEDICS_DEPARTMENT,DERMATOLOGY_DEPARTMENT,PSYCHIATRY_DEPARTMENT,
+        REHABILITATION_DEPARTMENT,ANESTHESIOLOGY_DEPARTMENT,OPHTHALMOLOGY_DEPARTMENT,
+        ENT_DEPARTMENT,GASTROENTEROLOGY_DEPARTMENT,UROLOGY_DEPARTMENT;
+    }
+
+    class Departments {
+        Department department;
+        String location;
+        String phone;
+    }
+
+    package hospital.staff {
+
+        class Duties {
+            Date shiftStart;
+            Date shiftEnd;
+            boolean available;
+        }
+
+        abstract class Employee extends Person {
+            Date dateJoined;
+            int employeeID;
+        }
+
+        composition [1] Employee (duties) <-> (duties) Duties [1..*];
+
+        class Receptionist extends Employee {
+            public void bookAppointment();
+            public void registerPatient();
+            public void checkInPatient();
+            public void checkOutPatient();
+        }
+
+        class Nurse extends Employee {
+            public void checkVitalSigns();
+            public void administerMedication();
+            public void updateMedicalHistory();
+        }
+
+        class Pharmacist extends Employee {
+            public void fillPrescription();
+            public void checkForDrugInteractions();
+            public void updateMedication();
+        }
+
+        class AdminStaff extends Employee {
+            public void updatePatientRecords();
+            public void updateEmployeeRecords();
+            public void updateDepartmentRecords();
+        }
+
+        class Pathologists extends Employee {
+            public void performTest();
+        }
+
+        class Doctor extends Employee {
+            int doctorID;
+            String specialization;
+            int yearsOfExperience;
+            public void prescribeMedication();
+            public void diagnose();
+        }
+
+        class Surgeon extends Doctor {
+            public void performSurgery();
+        }
+
+        association [1] AdminStaff (supervisedBy) <-> (supervises) Employee [1..*];
+        association [1] Doctor (head) <-> (heads) Departments [0..1];
+        association [1..*] Employee <-> (worksAt) Departments [0..1];
+  }
+}
+```
 
 ### Electronic Health Record
 
@@ -64,6 +182,84 @@ The `MedicalHistory` class is an abstract class representing the medical history
 There are composition relationships between `MedicalHistory` and each of the medical components, indicating that a medical history consists of multiple instances of these components.
 
 The `ElectronicHealthRecord` class represents an electronic health record for a patient. It contains attributes such as date of birth and blood type. It has a composition relationship with `MedicalHistory`, indicating that an electronic health record includes a patient's medical history.
+
+
+```
+//package com.his.ehr;
+
+import java.util.Date;
+
+classdiagram EHR {
+    
+    class Symptoms {
+        private List<String> name;
+    }
+
+    class Diagnosis {
+        private String code;
+        private String description;
+        private List<Symptoms> symptoms;
+        private String date;
+    }
+
+    class ScanReport {
+        private String name;
+        private String description;
+        private String date;
+        private String scanFile;
+    }
+
+    class Appointment {
+        private String patientId;
+        private String doctorID;
+        private String date;
+        private String time;
+    }
+
+    class Medication {
+        private String name;
+        private int dosage;
+        private String frequency;
+    }
+
+    class MedicalCondition {
+        private String name;
+        private String description;
+        private String treatment;
+    }
+
+    association [1] MedicalCondition -> (treatedBy) Medication [1..*];
+
+    enum BloodType {
+        A_POSITIVE,A_NEGATIVE,B_POSITIVE,B_NEGATIVE,AB_POSITIVE,AB_NEGATIVE,O_POSITIVE,O_NEGATIVE;
+    }
+
+    class MedicalHistory {
+        protected List<String> allergies;
+        public List<String> getAllergies();
+    }
+
+    composition MedicalHistory -> MedicalCondition [*];
+    composition MedicalHistory -> Medication [*];
+    composition MedicalHistory -> Diagnosis [*];
+    composition MedicalHistory -> Symptoms [*];
+    composition MedicalHistory -> ScanReport [*];
+    composition MedicalHistory -> Appointment [*];
+
+    class ElectronicHealthRecord {
+        protected Date dateOfBirth;
+        protected BloodType bloodType;
+
+        public BloodType getBloodType();
+        public Date getDateOfBirth();
+    } 
+    
+    composition ElectronicHealthRecord -> MedicalHistory [*];
+    
+}
+
+```
+
 
 ## Sequence Diagrams
 
@@ -97,11 +293,58 @@ The sequence diagram illustrates the interaction between a patient (`pt`), a doc
 
 13. The doctor updates the medical history in the electronic health record using the `addHistory()` operation.
 
+
+```
+sequencediagram Vaccination {
+
+  pt:Patient;
+  d:Doctor;
+  ehr:ElectronicHealthRecord;
+  plg:Pathologist;
+
+    pt -> d : consultdoctor() {
+        d -> ehr : getHealthRecord(pt) {
+            ehr -> d : return medHistory;
+        }
+
+        assert medHistory.scanRequired == True;
+
+        d -> pt :return advice;
+    }
+
+    pt -> plg : getScanned() {
+        plg -> ehr : createScanReport(scanReport) {
+            ehr -> plg : return;
+        } 
+
+        ehr -> d : notifyDoctor(scanReport) {
+            d -> ehr : return;
+        }
+
+        d -> ehr : reviewReport() {
+            ehr -> d : return;
+        }
+
+        d -> pt : consult() {
+            pt -> d : return;
+        }
+        
+        d -> ehr : addHistory() {
+            ehr -> d : return;
+        }
+
+    }
+}
+```
+
+
+![Visual Sequence Diagram for Patient Scan process](\his\Pics\SD1.png "Sequence Diagram")
+
 ### Vaccination
 
 The sequence diagram depicts the interaction between a patient (`p1`), a nurse (`nu1`), and an electronic health record (`ehr`) during a vaccination process that involves checking for allergies and using anti allergant along with the vaccine. This has been broken down into two parts, one for patient without allergies and one for with allergies.
 
-#### Vaccination of patient without allergies
+### Vaccination of patient without allergies
 
 The sequence of events is as follows:
 
@@ -119,7 +362,38 @@ The sequence of events is as follows:
 
 7.  The patient responds to the nurse's observation.
 
-#### Vaccination of patient with allergies
+```
+sequencediagram Vaccination {
+
+  p1:Patient;
+  nu1:Nurse;
+  ehr:ElectronicHealthRecord;
+
+  p1 -> nu1 : arriveToHospital() {
+    nu1 -> ehr : getAllergies(p1) {
+      ehr -> nu1 : return allergies;
+    }
+
+    assert allergies == null;
+
+    nu1 -> p1 : vaccinate() {
+      p1 -> nu1 : return;
+    }
+
+    nu1 -> p1 : ObservePatient() {
+      nu1 -> ehr : UpdateMedicalHistory() {
+        ehr -> nu1 : return;
+      }
+      p1 -> nu1 : return;
+    }
+  }
+}
+```
+
+![Visual Sequence Diagram for Vaccination of a Patient without Allergies](\his\Pics\Vaccination_With_allergies.png "Sequence Diagram")
+
+
+### Vaccination of patient with allergies
 
 1.  The patient arrives at the hospital and initiates the `arriveToHospital()` operation with the nurse.
 
@@ -140,6 +414,47 @@ The sequence of events is as follows:
 9.  The nurse updates the patient's medical history in the electronic health record using the `UpdateMedicalHistory()` operation.
 
 10. The patient responds to the nurse's observation.
+
+
+```
+sequencediagram Vaccination {
+
+  p1:Patient;
+  nu1:Nurse;
+  ehr:ElectronicHealthRecord;
+
+  p1 -> nu1 : arriveToHospital() {
+    nu1 -> ehr : getAllergies(p1) {
+      ehr -> nu1 : return allergies;
+    }
+
+    assert allergies != null;
+
+    nu1 -> ehr : getMedication(p1) {
+      ehr -> nu1 : return mc1;
+    }
+
+    nu1 -> nu1 : getAntiAllergent(mc1) {
+      nu1 -> nu1 : return antiAllergent;
+    }
+
+    nu1 -> p1 : vaccinate(antiAllergent) {
+      p1 -> nu1 : return;
+    }
+
+    nu1 -> p1 : ObservePatient() {
+      nu1 -> ehr : UpdateMedicalHistory() {
+        ehr -> nu1 : return;
+      }
+      p1 -> nu1 : return;
+    }
+  }
+}
+
+```
+
+![Visual Sequence Diagram for Vaccination of a Patient with Allergies](\his\Pics\Vaccination_Without_Allergies.png "Sequence Diagram")
+
 
 ## Use Case Diagram
 
