@@ -6,7 +6,7 @@ In this section, we present the models developed for the hospital information sy
 
 ## Class Diagrams
 
-![Visual Representation of Class Diagram showing all the classes](\his\Pics\UML_class.png "Class Diagram")
+![Visual Representation of Class Diagram showing all the classes](Pics\UML_class.png "Class Diagram")
 
 
 ### Patient
