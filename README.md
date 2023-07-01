@@ -1,92 +1,274 @@
-# HIS
+
+# Models and Documentation {#ch:listings}
+
+In this section, we present the models developed for the hospital information system using Monticore, a domain-specific modeling language and toolset, as well as Business Process Model and Notation (BPMN) diagrams. The models serve as visual representations of the system's structure, behavior, and interactions, offering stakeholders a comprehensive understanding of the various components and functionalities of the hospital information system.
+
+## Class Diagrams
+
+### Patient
+
+The `Patient` class represents a patient in a healthcare system. It extends the `Person` class and adds additional attributes specific to patients. The `Person` class contains common attributes such as ID, name, address, email, and phone.
+
+The `Patient` class has the following operations:
+
+-   `scheduleAppointment()`: Allows the patient to schedule an appointment.
+
+-   `requestMedication()`: Allows the patient to request medication.
+
+-   `provideMedicalHistory()`: Allows the patient to provide their medical history.
+
+The `Patient` class has a composition relationship with the `MedicalHistory` class, indicating that each patient has a medical history. This relationship is denoted by the arrow connecting `Patient` to `MedicalHistory` with a multiplicity of `[*]`, meaning each patient can have multiple medical history records.
 
 
 
-## Getting started
+### Hospital
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+The `Hospital` class has the following nested classes:
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+-   `Departments`: Represents a department in the hospital. It has attributes such as the department name, location, and phone number.
 
-## Add your files
+-   `Receptionist`, `Nurse`, `Pharmacist`, `AdminStaff`, `Pathologists`, `Doctor`, and `Surgeon`: These classes represent different types of employees in the hospital. They extend the `Employee` class, which itself extends the `Person` class. Each employee class has specific operations related to their role in the hospital.
 
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
+The `Hospital` class also has an enumeration called `Department`, which lists various departments in the hospital.
 
-```
-cd existing_repo
-git remote add origin https://git.rwth-aachen.de/santhosh.senthil.kumar/his.git
-git branch -M main
-git push -uf origin main
-```
+There are associations between the classes:
 
-## Integrate with your tools
+-   `Employee` has a composition relationship with `Duties`, indicating that each employee has one or more duties.
 
-- [ ] [Set up project integrations](https://git.rwth-aachen.de/santhosh.senthil.kumar/his/-/settings/integrations)
+-   `AdminStaff` has a supervision relationship with other employees, denoted by the association between `AdminStaff` and `Employee`.
 
-## Collaborate with your team
+-   `Doctor` has a relationship with `Departments`, indicating that each doctor can head a department, and each department can have a head doctor.
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Automatically merge when pipeline succeeds](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
+-   `Employee` has a relationship with `Departments`, indicating that each employee works in one department.
 
-## Test and Deploy
+### Electronic Health Record
 
-Use the built-in continuous integration in GitLab.
+The `EHR` class represents an Electronic Health Record (EHR) system. It contains several classes related to medical information.
 
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing(SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
+The `EHR` class has the following nested classes:
 
-***
+-   `Symptoms`: Represents a list of symptoms.
 
-# Editing this README
+-   `Diagnosis`: Represents a medical diagnosis with attributes such as code, description, date, and associated symptoms.
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thank you to [makeareadme.com](https://www.makeareadme.com/) for this template.
+-   `ScanReport`: Represents a scan report with attributes such as name, description, date, and the file containing the scan.
 
-## Suggestions for a good README
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
+-   `Appointment`: Represents a scheduled appointment with attributes such as patient ID, doctor ID, date, and time.
 
-## Name
-Choose a self-explaining name for your project.
+-   `Medication`: Represents a medication with attributes such as name, dosage, and frequency.
 
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
+-   `MedicalCondition`: Represents a medical condition with attributes such as name, description, and treatment. The treatment attribute within the MedicalCondition class allows for the inclusion of information related to the recommended or prescribed procedures, medications, therapies, or lifestyle modifications that are commonly associated with managing or treating that specific medical condition.
 
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
+The `MedicalHistory` class is an abstract class representing the medical history of a patient. It contains attributes and relationships to various medical components such as allergies, medical conditions, medications, diagnoses, symptoms, scan reports, and appointments.
 
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
+There are composition relationships between `MedicalHistory` and each of the medical components, indicating that a medical history consists of multiple instances of these components.
 
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
+The `ElectronicHealthRecord` class represents an electronic health record for a patient. It contains attributes such as date of birth and blood type. It has a composition relationship with `MedicalHistory`, indicating that an electronic health record includes a patient's medical history.
 
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
+## Sequence Diagrams
 
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
+### Patient Scan
 
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
+The sequence diagram illustrates the interaction between a patient (`pt`), a doctor (`d`), an electronic health record (`ehr`), and a pathologist (`plg`) during a scanning process.
 
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
+1.  The patient initiates the `consultdoctor()` operation with the doctor.
 
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
+2.  The doctor retrieves the patient's health record from the electronic health record (`ehr`) using the `getHealthRecord(pt)` operation.
 
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
+3.  The electronic health record returns the medical history (`medHistory`) to the doctor.
 
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
+4.  The doctor verifies if a scan is required by checking the `scanRequired` attribute of the medical history. If it is true, the process continues; otherwise, the doctor provides advice to the patient and the sequence ends.
 
-## License
-For open source projects, say how it is licensed.
+5.  The doctor informs the patient of their advice using the `return advice` operation.
 
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+6.  The patient requests the pathologist (`plg`) to get scanned by invoking the `getScanned()` operation.
+
+7.  The pathologist creates a scan report (`scanReport`) and sends it to the electronic health record using the `createScanReport(scanReport)` operation.
+
+8.  The electronic health record receives the scan report and acknowledges the pathologist.
+
+9.  The electronic health record notifies the doctor about the scan report using the `notifyDoctor(scanReport)` operation.
+
+10. The doctor reviews the scan report using the `reviewReport()` operation.
+
+11. The doctor consults with the patient using the `consult()` operation.
+
+12. The patient responds to the doctor's consultation.
+
+13. The doctor updates the medical history in the electronic health record using the `addHistory()` operation.
+
+### Vaccination
+
+The sequence diagram depicts the interaction between a patient (`p1`), a nurse (`nu1`), and an electronic health record (`ehr`) during a vaccination process that involves checking for allergies and using anti allergant along with the vaccine. This has been broken down into two parts, one for patient without allergies and one for with allergies.
+
+#### Vaccination of patient without allergies
+
+The sequence of events is as follows:
+
+1.  The patient arrives at the hospital and initiates the `arriveToHospital()` operation with the nurse.
+
+2.  The nurse retrieves the patient's allergies from the electronic health record using the `getAllergies(p1)` operation.
+
+3.  The electronic health record returns no allergies to the nurse.
+
+4.  The nurse administers the vaccination to the patient.
+
+5.  The nurse observes the patient and initiates the `ObservePatient()` operation.
+
+6.  The nurse updates the patient's medical history in the electronic health record using the `UpdateMedicalHistory()` operation.
+
+7.  The patient responds to the nurse's observation.
+
+#### Vaccination of patient with allergies
+
+1.  The patient arrives at the hospital and initiates the `arriveToHospital()` operation with the nurse.
+
+2.  The nurse retrieves the patient's allergies from the electronic health record using the `getAllergies(p1)` operation.
+
+3.  The electronic health record returns the allergies to the nurse.
+
+4.  The nurse retrieves the patient's medication history (`mc1`) from the electronic health record using the `getMedication(p1)` operation.
+
+5.  The electronic health record returns the medication history to the nurse.
+
+6.  The nurse checks for an anti-allergen (`antiAllergent`) based on the medication history.
+
+7.  The nurse administers the vaccination to the patient, taking into account the anti-allergen.
+
+8.  The nurse observes the patient and initiates the `ObservePatient()` operation.
+
+9.  The nurse updates the patient's medical history in the electronic health record using the `UpdateMedicalHistory()` operation.
+
+10. The patient responds to the nurse's observation.
+
+## Use Case Diagram
+
+### Reception and Patient UCD
+
+This use case diagram illustrates the various interactions and functionalities between a receptionist and a patient in the hospital information system.
+
+**Use Cases**
+
+-   ScheduleAppointment: This use case allows the receptionist and the patient to schedule an appointment for a specific date and time.
+
+-   ScheduleHospitalAdmission: The receptionist and the patient can use this use case to schedule a hospital admission for the patient.
+
+-   PatientRegistration: This use case enables the receptionist and the patient to complete the patient registration process.
+
+-   PatientHospitalAdmission: The receptionist can initiate the patient's hospital admission process using this use case.
+
+-   FileMedicalReports: The receptionist can use this use case to file and manage the patient's medical reports.
+
+**Actors**
+
+-   Receptionist: Represents the hospital receptionist who interacts with the patient and performs administrative tasks.
+
+-   Patient: Represents the individual seeking medical care from the hospital.
+
+**Relationships**
+
+-   The Receptionist actor is associated with several use cases, including ScheduleAppointment, ScheduleHospitalAdmission, PatientRegistration, PatientHospitalAdmission, and FileMedicalReports.
+
+-   The Patient actor is associated with ScheduleAppointment, ScheduleHospitalAdmission, and PatientRegistration.
+
+-   PatientRegistration extends both ScheduleHospitalAdmission and ScheduleAppointment, indicating that patient registration involves scheduling hospital admissions and appointments.
+
+-   PatientHospitalAdmission includes PatientRegistration, indicating that the patient's hospital admission process includes patient registration.
+
+-   NewPatientHospitalAdmission specializes PatientHospitalAdmission, indicating a specific type of patient hospital admission for new patients.
+
+-   InHospitalPatientAdmission specializes PatientHospitalAdmission, representing the hospital admission process for existing inpatients.
+
+-   Both NewPatientHospitalAdmission and InHospitalPatientAdmission include BedAllotment, indicating that bed allotment is part of the respective admission processes.
+
+### Dischage Patient UCD
+
+This use case diagram illustrates the interactions and functionalities related to the discharge of a patient from a hospital in the hospital information system.
+
+**Use Cases**
+
+-   DischargePatient: Represents the use case where the receptionist performs the patient discharge process.
+
+-   GenerateBill: This use case extends the ViewEHRs use case and involves generating the patient's bill as part of the discharge process.
+
+**Actors**
+
+-   Receptionist: Represents the hospital receptionist who is responsible for initiating and managing the discharge process.
+
+**Relationships**
+
+-   The Receptionist actor is associated with the DischargePatient use case, indicating that the receptionist is responsible for performing the patient discharge process.
+
+-   GenerateBill extends the ViewEHRs use case, indicating that generating the patient's bill is an additional step within the discharge process.
+
+-   DischargePatient includes the GenerateBill use case, indicating that generating the bill is a part of the overall discharge process.
+
+-   DischargeOutPatient specializes the DischargePatient use case, representing the discharge process for patients who were treated as outpatients.
+
+-   DischargeInPatient specializes the DischargePatient use case, representing the discharge process for patients who were admitted to the hospital as inpatients.
+
+### Doctor Patient Interaction with EHR Use Case
+
+This use case diagram illustrates the interactions and functionalities of the Electronic Health Record (EHR) system within the hospital information system. It captures the use cases involving doctors and patients in accessing and managing medical information.
+
+**Use Cases**
+
+-   ViewMedicalHistory: This use case allows doctors and patients to view the medical history of the patient.
+
+-   AddDiagnosis: Doctors can use this use case to add a diagnosis to a patient's medical record.
+
+-   PrescribeMedication: Doctors can prescribe medication to patients using this use case.
+
+-   ScheduleAppointment: Patients can schedule an appointment using this use case.
+
+-   RequestMedication: Patients can request medication through this use case.
+
+-   ProvideMedicalHistory: Patients can provide their medical history using this use case.
+
+**Actors**
+
+-   Doctor: Represents the medical professional responsible for diagnosing and treating patients.
+
+-   Patient: Represents an individual seeking medical care from the hospital.
+
+**Relationships**
+
+-   The Doctor actor is associated with ViewMedicalHistory, AddDiagnosis, and PrescribeMedication use cases, indicating the functionalities available to doctors.
+
+-   The Patient actor is associated with ViewMedicalHistory, ScheduleAppointment, RequestMedication, and ProvideMedicalHistory use cases, representing the functionalities accessible to patients.
+
+-   ViewMedicalHistory extends ProvideMedicalHistory, indicating that the action of viewing the medical history is built upon the patient providing their medical history.
+
+-   PrescribeMedication includes RequestMedication, indicating that prescribing medication includes the request made by the patient.
+
+## BPMN Diagram
+
+In the following BPMN model, the process of a doctor scheduling a test is explained:
+
+1.  The doctor in the hospital orders a test.
+
+2.  The receptionist receives the test order and schedules the test.
+
+3.  The receptionist notifies the patient about the scheduled appointment.
+
+4.  An event-based gateway is used to wait for the patient's response.
+
+5.  When the patient responds, it is checked if they want to reschedule the appointment or accept it.
+
+6.  If the patient wants to reschedule the appointment, the process loops back to the scheduling step.
+
+7.  If the appointment is accepted, the pathologist is assigned to perform the test.
+
+8.  The pathologist collects samples for the test and analyzes them.
+
+9.  If the test results are inconclusive, the test is performed again.
+
+10. The pathologist repeats the test until the results are conclusive.
+
+11. The conclusive test result is updated in the system and stored under the patient's electronic health record.
+
+12. The test result is communicated to the doctor.
+
+13. The doctor reviews the test result and updates the patient's health record in the health information system.
+
+14. The doctor notifies the patient about the test result.
