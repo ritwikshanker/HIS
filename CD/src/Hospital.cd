@@ -64,7 +64,7 @@ classdiagram Hospital {
             public void performTest();
         }
 
-        class Doctor extends Person {
+        class Doctor extends Employee {
             int doctorID;
             String specialization;
             int yearsOfExperience;
