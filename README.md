@@ -496,6 +496,37 @@ This use case diagram illustrates the various interactions and functionalities b
 
 -   Both NewPatientHospitalAdmission and InHospitalPatientAdmission include BedAllotment, indicating that bed allotment is part of the respective admission processes.
 
+
+
+```
+usecasediagram Receptionist_Patient {
+  @Receptionist --
+    ScheduleAppointment,
+    ScheduleHospitalAdmission,
+    PatientRegistration,
+    PatientHospitalAdmission,
+    FileMedicalReports;
+
+  @Patient --
+    ScheduleAppointment,
+    ScheduleHospitalAdmission,
+    PatientRegistration;
+
+  PatientRegistration extend ScheduleHospitalAdmission;
+  PatientRegistration extend ScheduleAppointment;
+  PatientHospitalAdmission include PatientRegistration;
+
+  NewPatientHospitalAdmission specializes PatientHospitalAdmission;
+  InHospitalPatientAdmission specializes PatientHospitalAdmission;
+
+  NewPatientHospitalAdmission include BedAllotment;
+  InHospitalPatientAdmission include BedAllotment;
+}
+```
+
+
+![Visual Use Case Diagram of Reception and Patient Case](\his\Pics\Receptionist_Patient_UCD.png "Use Case Diagram")
+
 ### Dischage Patient UCD
 
 This use case diagram illustrates the interactions and functionalities related to the discharge of a patient from a hospital in the hospital information system.
@@ -521,6 +552,23 @@ This use case diagram illustrates the interactions and functionalities related t
 -   DischargeOutPatient specializes the DischargePatient use case, representing the discharge process for patients who were treated as outpatients.
 
 -   DischargeInPatient specializes the DischargePatient use case, representing the discharge process for patients who were admitted to the hospital as inpatients.
+
+```
+usecasediagram DischargePatient {
+  @Receptionist --
+    DischargePatient;
+
+
+  GenerateBill extends ViewEHRs
+  DischargePatient includes GenerateBill
+  DischargeOutPatient specializes DischargePatient;
+  DischargeInPatient specializes DischargePatient;
+}
+
+```
+
+![Visual Use Case Diagram of Discharge Patient Case](\his\Pics\Dischage_Patient_UCD.png "Use Case Diagram")
+
 
 ### Doctor Patient Interaction with EHR Use Case
 
@@ -556,6 +604,26 @@ This use case diagram illustrates the interactions and functionalities of the El
 
 -   PrescribeMedication includes RequestMedication, indicating that prescribing medication includes the request made by the patient.
 
+```
+usecasediagram ElectronicHealthRecord {
+  @Doctor --
+    ViewMedicalHistory,
+    AddDiagnosis,
+    PrescribeMedication;
+
+  @Patient --
+    ViewMedicalHistory,
+    ScheduleAppointment,
+    RequestMedication,
+    ProvideMedicalHistory;
+
+  ViewMedicalHistory extend ProvideMedicalHistory;
+  PrescribeMedication include RequestMedication;
+}
+```
+
+![Visual Use Case Diagram of Doctor Patient Interaction with EHR Use Case](\his\Pics\EHR_Doctor_Patient_UCD.png "Use Case Diagram")
+
 ## BPMN Diagram
 
 In the following BPMN model, the process of a doctor scheduling a test is explained:
@@ -587,3 +655,7 @@ In the following BPMN model, the process of a doctor scheduling a test is explai
 13. The doctor reviews the test result and updates the patient's health record in the health information system.
 
 14. The doctor notifies the patient about the test result.
+
+
+
+![BPMN Diagram showcasing the process of a doctor scheduling a test](\his\BPMN\lab_bmpn.png "BPMN Diagram")
