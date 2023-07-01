@@ -1,0 +1,25 @@
+sequencediagram Vaccination {
+
+  p1:Patient;
+  nu1:Nurse;
+  ehr:ElectronicHealthRecord;
+
+  p1 -> nu1 : arriveToHospital() {
+    nu1 -> ehr : getAllergies(p1) {
+      ehr -> nu1 : return allergies;
+    }
+
+    assert allergies == null;
+
+    nu1 -> p1 : vaccinate() {
+      p1 -> nu1 : return;
+    }
+
+    nu1 -> p1 : ObservePatient() {
+      nu1 -> ehr : UpdateMedicalHistory() {
+        ehr -> nu1 : return;
+      }
+      p1 -> nu1 : return;
+    }
+  }
+}

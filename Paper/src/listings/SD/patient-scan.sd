@@ -1,0 +1,40 @@
+sequencediagram Vaccination {
+
+  pt:Patient;
+  d:Doctor;
+  ehr:ElectronicHealthRecord;
+  plg:Pathologist;
+
+    pt -> d : consultdoctor() {
+        d -> ehr : getHealthRecord(pt) {
+            ehr -> d : return medHistory;
+        }
+
+        assert medHistory.scanRequired == True;
+
+        d -> pt :return advice;
+    }
+
+    pt -> plg : getScanned() {
+        plg -> ehr : createScanReport(scanReport) {
+            ehr -> plg : return;
+        } 
+
+        ehr -> d : notifyDoctor(scanReport) {
+            d -> ehr : return;
+        }
+
+        d -> ehr : reviewReport() {
+            ehr -> d : return;
+        }
+
+        d -> pt : consult() {
+            pt -> d : return;
+        }
+        
+        d -> ehr : addHistory() {
+            ehr -> d : return;
+        }
+
+    }
+}

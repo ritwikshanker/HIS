@@ -1,0 +1,10 @@
+usecasediagram DischargePatient {
+  @Receptionist --
+    DischargePatient;
+
+
+  GenerateBill extends ViewEHRs
+  DischargePatient includes GenerateBill
+  DischargeOutPatient specializes DischargePatient;
+  DischargeInPatient specializes DischargePatient;
+}
