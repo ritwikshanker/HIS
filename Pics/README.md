@@ -338,7 +338,7 @@ sequencediagram Vaccination {
 ```
 
 
-![Visual Sequence Diagram for Patient Scan process](\his\Pics\SD1.png "Sequence Diagram")
+![Visual Sequence Diagram for Patient Scan process](SD1.png "Sequence Diagram")
 
 ### Vaccination
 
@@ -390,7 +390,7 @@ sequencediagram Vaccination {
 }
 ```
 
-![Visual Sequence Diagram for Vaccination of a Patient without Allergies](\his\Pics\Vaccination_With_allergies.png "Sequence Diagram")
+![Visual Sequence Diagram for Vaccination of a Patient without Allergies](Vaccination_With_allergies.png "Sequence Diagram")
 
 
 ### Vaccination of patient with allergies
@@ -453,7 +453,7 @@ sequencediagram Vaccination {
 
 ```
 
-![Visual Sequence Diagram for Vaccination of a Patient with Allergies](\his\Pics\Vaccination_Without_Allergies.png "Sequence Diagram")
+![Visual Sequence Diagram for Vaccination of a Patient with Allergies](Vaccination_Without_Allergies.png "Sequence Diagram")
 
 
 ## Use Case Diagram
@@ -525,7 +525,7 @@ usecasediagram Receptionist_Patient {
 ```
 
 
-![Visual Use Case Diagram of Reception and Patient Case](\his\Pics\Receptionist_Patient_UCD.png "Use Case Diagram")
+![Visual Use Case Diagram of Reception and Patient Case](Receptionist_Patient_UCD.png "Use Case Diagram")
 
 ### Dischage Patient UCD
 
@@ -567,7 +567,7 @@ usecasediagram DischargePatient {
 
 ```
 
-![Visual Use Case Diagram of Discharge Patient Case](\his\Pics\Dischage_Patient_UCD.png "Use Case Diagram")
+![Visual Use Case Diagram of Discharge Patient Case](Dischage_Patient_UCD.png "Use Case Diagram")
 
 
 ### Doctor Patient Interaction with EHR Use Case
@@ -622,7 +622,7 @@ usecasediagram ElectronicHealthRecord {
 }
 ```
 
-![Visual Use Case Diagram of Doctor Patient Interaction with EHR Use Case](\his\Pics\EHR_Doctor_Patient_UCD.png "Use Case Diagram")
+![Visual Use Case Diagram of Doctor Patient Interaction with EHR Use Case](EHR_Doctor_Patient_UCD.png "Use Case Diagram")
 
 ## BPMN Diagram
 
@@ -658,4 +658,4 @@ In the following BPMN model, the process of a doctor scheduling a test is explai
 
 
 
-![BPMN Diagram showcasing the process of a doctor scheduling a test](\his\BPMN\lab_bmpn.png "BPMN Diagram")
+![BPMN Diagram showcasing the process of a doctor scheduling a test](lab_bmpn.png "BPMN Diagram")
